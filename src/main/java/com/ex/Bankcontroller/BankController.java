@@ -11,7 +11,7 @@ public class BankController
     @GetMapping("/balance")
     public String balanace()
     {
-        return "Your Balance :: 7884.00 INR";
+        return "Your  Balance :: 7884.00 INR";
     }
 
     @GetMapping("/transfer")

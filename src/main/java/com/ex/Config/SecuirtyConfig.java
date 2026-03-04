@@ -24,6 +24,7 @@ public class SecuirtyConfig
                 ).formLogin(Customizer.withDefaults()
         );
         return http.build();
+
     }
 
 
