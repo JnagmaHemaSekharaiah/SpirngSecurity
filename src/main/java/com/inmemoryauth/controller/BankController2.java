@@ -1,4 +1,4 @@
-package com.ex2.controller;
+package com.inmemoryauth.controller;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;

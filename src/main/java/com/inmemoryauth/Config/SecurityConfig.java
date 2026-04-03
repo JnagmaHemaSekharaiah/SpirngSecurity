@@ -1,4 +1,4 @@
-package com.ex2.Config;
+package com.inmemoryauth.Config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
