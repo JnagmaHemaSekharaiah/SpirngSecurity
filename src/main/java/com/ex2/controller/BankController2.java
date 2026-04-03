@@ -1,18 +1,14 @@
-package com.ex.Bankcontroller;
+package com.ex2.controller;
 
-import com.ex.Config.SecuirtyConfig;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-
 @RestController
-public class BankController
+public class BankController2
 {
-
     @GetMapping("/balance")
     public String balanace()
     {
-
         return "Your  Balance :: 7884.00 INR";
     }
 
@@ -33,5 +29,7 @@ public class BankController
     {
         return "Contact US :: abc@bank.com";
     }
+
+
 
 }

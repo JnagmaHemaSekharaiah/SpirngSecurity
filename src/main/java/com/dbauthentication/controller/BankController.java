@@ -1,6 +1,5 @@
-package com.ex.Bankcontroller;
+package com.dbauthentication.controller;
 
-import com.ex.Config.SecuirtyConfig;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -12,7 +11,6 @@ public class BankController
     @GetMapping("/balance")
     public String balanace()
     {
-
         return "Your  Balance :: 7884.00 INR";
     }
 
