@@ -1,0 +1,78 @@
+Authorization Rules
+-------------------
+
+Which URL which can access
+
+http
+    .authorizeHttpRequests(auth -> auth
+        .requestMatchers("/public/**").permitAll()
+        .requestMatchers("/admin/**").hasRole("ADMIN")
+        .requestMatchers("/user/**").authenticated()
+        .anyRequest().authenticated() //Any URL not explicitly configured must be accessed only by a logged-in user.
+   ). formLogin(form -> form
+            .loginPage("/login")
+            .permitAll()
+        );
+   http.build();
+ );
+
+
+Oder matters here :
+-------------------
+Public URL
+role-based urls
+authenticated URL
+Default rule(anyRequest())
+
+
+authorizeHttpRequests()
+------------------------
+Starts the authorization configuration for incoming HTTP requests.
+
+requestMatchers()
+-------------------
+matches url pattern
+
+.requestMatchers("/public/**").permitAll()
+--------------------------------------------
+ allow access to anyone end point. used to without login
+
+.requestMatchers("/admin/**").hasRole("ADMIN"):
+---------------------------------------------
+allow only user with Admin role
+
+.requestMatchers("/login/**").hasAnyRole("Admin","Users")
+-------------------------------------------------------------
+
+anyRequest().authenticated()
+----------------------------
+Any URL not explicitly configured must be accessed only by a logged-in user.
+
+
+.requestMatchers("/user/**").authenticated()
+---------------------------------------------
+Any URL that starts with /user/ can be accessed only by a logged-in user.
+
+| Method                    | Meaning                |
+| ------------------------- | ---------------------- |
+| `authorizeHttpRequests()` | Start security rules   |
+| `requestMatchers()`       | Select URL             |
+| `permitAll()`             | Everyone allowed       |
+| `authenticated()`         | Login required         |
+| `hasRole()`               | Specific role required |
+| `hasAnyRole()`            | Multiple roles allowed |
+
+Simple flow
+-------------
+authorizeHttpRequests
+       ↓
+requestMatchers (choose URL)
+       ↓
+permitAll / authenticated / hasRole / hasAnyRole
+
+permitAll()          → everyone
+authenticated()      → only logged-in users
+hasRole()            → specific role required
+requestMatchers()
+hasAnyRole
+authorizeHttpRequests
