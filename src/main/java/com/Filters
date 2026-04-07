@@ -1,0 +1,41 @@
+Authentication Interal Flow
+----------------------------
+Filter ->  Authentication Manager -> Authentication Provider -> UserDetailsService
+
+
+Request
+  ↓
+Authentication Filters (login happens here)
+  ↓
+SecurityContext set
+  ↓
+Authorization (FilterSecurityInterceptor)
+  ↓
+Controller
+
+
+---------------------------------
+Full Spring Security Filter Chain
+----------------------------------
+
+Client Request
+     ↓
+[Security Filter Chain]
+     ↓
+---------------------------------------------------------
+| 1. SecurityContextHolderFilter
+| 2. CsrfFilter
+| 3. LogoutFilter
+| 4. UsernamePasswordAuthenticationFilter (Form Login)
+| 5. BasicAuthenticationFilter (HTTP Basic)
+| 6. Custom JWT Filter (if added)
+| 7. RequestCacheAwareFilter
+| 8. SecurityContextHolderAwareRequestFilter
+| 9. AnonymousAuthenticationFilter
+|10. ExceptionTranslationFilter
+|11. FilterSecurityInterceptor
+---------------------------------------------------------
+     ↓
+Controller (if authorized)
+
+

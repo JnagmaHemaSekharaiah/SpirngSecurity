@@ -26,17 +26,22 @@ public class SecurityConfig
                         .requestMatchers("/login-check").hasAnyRole("ADMIN","USER")
                         .requestMatchers("/balance","/transfer").hasRole("ADMIN")
                         )
-                .httpBasic(Customizer.withDefaults()); // enabling Basic authentication
+                .httpBasic(Customizer.withDefaults()) // enabling Basic authentication
+
+                .formLogin(form -> form.loginPage("/login"))
+        ;
+
         return http.build();
     }
 
     @Bean
-    public UserDetailsService userDetailsService(PasswordEncoder encoder) {
+    public UserDetailsService userDetailsService() {
 
         UserDetails user = User.withUsername("Hema")
-                .password(encoder.encode("Sekhar@01")) // no en-coding
+                .password("{noop}Sekhar@01") // no en-coding
                 .roles("USER","Admin")
                 .build();
+
         UserDetails admin = User.withUsername("Ravi")
                 .password("{noop}Ravi@01")
                 .roles("ADMIN")
@@ -46,7 +51,7 @@ public class SecurityConfig
 
     }
 
-    @Bean
+    //@Bean
     public PasswordEncoder passwordEncoder()
     {
         return new BCryptPasswordEncoder();

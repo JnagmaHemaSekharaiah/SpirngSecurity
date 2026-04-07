@@ -1,3 +1,10 @@
+=============
+Http Security
+=============
+
+HttpSecurity class is a builder for Web Security Configuration.
+it provide methods to customize authentication, authorization, CSRF, CORS, Sessions.
+
 Authorization Rules
 -------------------
 

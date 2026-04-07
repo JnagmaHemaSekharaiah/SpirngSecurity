@@ -1,0 +1,142 @@
+In Memory Authentication
+------------------------
+-----------------
+UserDetailService
+-----------------
+UserDetailsService is a interface it act as bridge between database and Spring Security.
+It load the Data form the data base
+
+
+interface UserDetailService(){
+   UserDetail loadUserByUserName(String Username throw UserNoFoundException
+}
+
+--------------------------
+In MemoryUserDetailManager
+--------------------------
+It is the implementation of UserDetailService
+Insteadad of Data base it stores user details in the memory
+It is class in Spirng security
+
+-----------
+UserDetails
+-------------
+It is an interface
+It holds the Username,password,role,account status(Locked,Expired)
+
+getUserName()
+getPassword()
+getAuthorities()
+isAccountNonExpired()
+isAccountNonLocked()
+isEnabled()
+
+User
+-----
+User is a concreate implementation of the UserDetails
+It follows Builder design pattern bez having more paramters.
+
+roles automatically becomes ROLE_ADMIN,ROLE_USER
+
+---------------------
+BCyrptPasswordEncoder
+---------------------
+BCyrptPasswordEncoder is password hashing utility provided by the spring secuity.
+
+ password ->  BCyrptPasswordEncoder  ->  Hashed Password (Stored in DB)
+
+During Login:
+
+User enter password -> hashed again ->  Compared with Stored hash
+
+Feature of the BCyrptPasswordEncoder::
+
+1.One way of Hashing
+Can not do the reverse hashing.
+
+2.Salt include automatically
+-> Even Same passwords produce different hashes
+
+example
+1234 → $2a$10$abc...
+1234 → $2a$10$xyz...
+
+3.Adaptive (Slow Hashing)
+Takes time -> prevent brute force attack.
+prevent from rainbow table attack.
+
+4.better than MD5 & SHA-1
+
+5 new BCyrptEncoder(10);
+-> Higer value more secure but slow processing
+-> Deafult 10
+
+-------------
+PasswordEncoder
+---------------
+is core interface
+Password Encoder is a core interface in spring security used to hash (encode) and verify passwords securely.
+It defines how password are stored and compared instead of using plain text.
+
+interface PasswordEncoder()
+{
+  String encode(CharacterSequece rewpassword);
+  boolean  matches(CharacterSequece rawpassword,String encodedPassword)
+}
+
+Password Encoder is a core interface in spring security used to hash (encode)
+and verify passwords securely.
+
+Implementations:
+1.BCryptPasswordEncoder(recommended)
+2.NoOpPasswordEncoder (No Secure){ 1.no hashing 2.only for testing }
+
+
+
+
+BasicAuthenticationFilter
+        ↓
+UsernamePasswordAuthenticationToken (created)
+        ↓
+AuthenticationManager
+        ↓
+DaoAuthenticationProvider
+        ↓
+UserDetailsService
+        ↓
+PasswordEncoder
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

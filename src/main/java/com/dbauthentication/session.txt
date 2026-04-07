@@ -7,3 +7,4 @@ Here we are making session is stateless
 every request must be authenticated again
 no session is stroed
 no JSESSIONID cookie
+
