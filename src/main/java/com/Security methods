@@ -1,0 +1,241 @@
+Authentication methods
+----------------------
+Http Basic Authentication
+Form based authentication
+JWT(Token Based Authentication)
+OAuth2 Authentication
+LDAP Authentication
+In-Memory Authentication
+
+
+
+
+========================
+Authentication Interface
+=========================
+It flows entire through the entire authentication pipeline.
+
+1.HTTP BASIC
+-----------
+BasicAuthenticationFilter
+ |
+create Authentication
+ |
+Authentication Manager
+
+2.Authentication authenticate(Authentication authentication);
+
+3. DaoAuthenticationProvider
+    public Authentication authenticate(Authentication authentication)
+
+4.Authentication auth =
+     SecurityContextHolder.getContext().getAuthentication();.
+
+
+ interface Authentication {
+Object getPrincipal();   // user Info
+
+Object getCredentials()  // getPassword
+
+Collection<? extends GrantedAuthority> getAuthorities(); // roles
+
+boolean isAuhenticated() // true/false
+
+void setAuthenticated(boolean isAuthenticated);
+
+ }
+
+
+==================================
+AuthenticationManager [Interface]
+==================================
+
+interface AuthenticationManager {
+Authentication authenticate(Authentication authentication)
+       throws AuthenticationException;
+}
+
+Uasage : Takes authenticate object
+         returns a fully authenticated object (with roles/authorities)
+
+Used in Http Basics
+-------------------
+BasicAuthenticationFilter uses it
+
+Form Login
+------------
+UsernamePasswordAuthenticationFilter
+
+manually API
+------------
+@Autowired
+AuthenticationManager authenticationManager;
+
+public String login(String username, String password) {
+
+    Authentication auth = authenticationManager.authenticate(
+        new UsernamePasswordAuthenticationToken(username, password)
+    );
+
+    // if success → generate JWT
+    return "JWT_TOKEN";
+}
+
+It delegate to Authentication Providers
+
+DaoAuthenticationProvider is default implementation of AuthenticationProvider.
+
+DaoAuthenticationProvider is uses UserDetailsService & PasswordEncoder
+
+======================
+AuthenticationProvider
+======================
+public interface AuthenticationProvider {
+    Authentication authenticate(Authentication authentication)
+        throws AuthenticationException;
+
+    boolean supports(Class<?> authentication);
+}
+
+AuthenticationProvider is responsible for the validating user credentails and returning and
+authenticated object
+It is the core component that performs authentication
+Used by AuthenticationManager (delegation)
+
+input  : Authentication Object (username +password)
+Output : Authenticated object
+
+
+Common Implemention
+-------------------
+DAOAuthenticationProvider
+LdapAuthenticationProvider
+OAuth2LoginAuthenticationProvider
+Custom AuthenticationProvider
+
+How it works
+-------------
+ProviderManager
+      |
+[ProviderManager 1,Provider Manager 2,privoder manager 3]
+
+ Flow:
+ Calls support()
+ if true   -> calls auhenticate()
+ if sucess -> stops
+ if fail -> tries next provider
+
+
+=======================
+Securuty Context Holder
+=======================
+It is core static utility class in spirng secutiy that stores and provide access to the
+current authenticated user information during request.
+
+SecurityContextHolder = Global holder for Authentication (current user)
+
+It holds SecurityContext contains Authentication Object
+
+internally: SecontetxtHolder-> SecurityContext -> Authentication
+
+1.getContext()
+--------------
+SecurityContext context = SecurityContextHolder.getContext();
+
+return current SecurityContext
+Never returns null (creates one if not present)
+
+
+2.setContext(SecurityContext context):
+-------------------------------------
+SecurityContextHolder.setContext(context)
+
+set the context manually
+used in custom authentication flows
+
+3.clearContext()
+--------------
+SecurityContextHolder.clearContext();
+
+clear authentication info
+used during log out
+
+4.createEmptyContext()
+  ---------------------
+  SecurityContext context = SecurityContextHolder.createEmptyContext();
+
+  create a new empty context
+  Useful for manual authentication setup.
+
+getConetextHolderStrategy()
+----------------------------
+SecurityContext context = SecurityContextHolder.createEmptyContext();
+
+return internal storage strategy
+
+Strategy Patterns inside
+-------------------------
+MODE_THREADLOCAL(default) ->   one context per Thread
+
+MODE_INHERITABLETHREADLOCAL -> Child threads inherit parent context
+
+MODE_GLOBAL -> Single global context (rarely used)
+
+===============
+Secuiry Context
+===============
+It is core spring security object that holds the current user's authentication
+information for a request.
+
+SecurityContext = container that stores Authentication (current user details)
+
+strcture
+----------
+SecurityContextHolder
+        ↓
+   SecurityContext
+        ↓
+   Authentication
+        ↓
+   User + Roles
+
+public interface SecurityContext {
+
+    Authentication getAuthentication();
+
+    void setAuthentication(Authentication authentication);
+}
+
+Analogy
+Concept	                  Analogy
+SecurityContextHolder	Locker system
+SecurityContext       	Locker
+Authentication      	Items inside locker
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

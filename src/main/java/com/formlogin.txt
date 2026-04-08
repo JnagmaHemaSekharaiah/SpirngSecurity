@@ -1,0 +1,6 @@
+UsernamePasswordAuthenticationFilter
+-------------------------------------
+This filter will be created when we added .form() based login.
+
+Note : If we add both [ http.basic() & form.login() ]based on the request it will be called
+
