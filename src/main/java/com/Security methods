@@ -177,6 +177,7 @@ Strategy Patterns inside
 -------------------------
 MODE_THREADLOCAL(default) ->   one context per Thread
 
+
 MODE_INHERITABLETHREADLOCAL -> Child threads inherit parent context
 
 MODE_GLOBAL -> Single global context (rarely used)
